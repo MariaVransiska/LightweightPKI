@@ -21,7 +21,6 @@ from .crypto_utils import (
     write_json,
 )
 
-
 class PKIPaths:
     def __init__(self, workspace: Path) -> None:
         self.workspace = workspace
@@ -41,7 +40,6 @@ class PKIPaths:
 
     def user_cert(self, user_id: str) -> Path:
         return self.user_dir(user_id) / "certificate.pem"
-
 
 def init_ca(workspace: Path, org: str, validity_days: int = 3650) -> dict[str, str]:
     paths = PKIPaths(workspace)
@@ -91,7 +89,6 @@ def init_ca(workspace: Path, org: str, validity_days: int = 3650) -> dict[str, s
         "ca_certificate": str(paths.ca_cert),
         "fingerprint_sha256": certificate_fingerprint(certificate),
     }
-
 
 def issue_certificate(
     workspace: Path,
@@ -157,13 +154,11 @@ def issue_certificate(
         "fingerprint_sha256": certificate_fingerprint(certificate),
     }
 
-
 def load_revocation_list(workspace: Path) -> dict[str, list[dict[str, str]]]:
     paths = PKIPaths(workspace)
     if not paths.revocations.exists():
         write_json(paths.revocations, {"revoked": []})
     return read_json(paths.revocations)  # type: ignore[return-value]
-
 
 def revoke_certificate(workspace: Path, user_id: str, reason: str) -> dict[str, str]:
     paths = PKIPaths(workspace)
@@ -184,7 +179,6 @@ def revoke_certificate(workspace: Path, user_id: str, reason: str) -> dict[str, 
         )
         write_json(paths.revocations, revocations)
     return {"user_id": user_id, "fingerprint_sha256": fingerprint, "status": "revoked"}
-
 
 def is_revoked(workspace: Path, fingerprint: str) -> bool:
     revocations = load_revocation_list(workspace)

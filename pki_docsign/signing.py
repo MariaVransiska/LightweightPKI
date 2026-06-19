@@ -23,11 +23,9 @@ from .crypto_utils import (
     write_json,
 )
 
-
 def _subject_value(certificate: x509.Certificate, oid: x509.ObjectIdentifier) -> str:
     values = certificate.subject.get_attributes_for_oid(oid)
     return values[0].value if values else ""
-
 
 def _signature_payload(document_hash: str, signer_cert_fingerprint: str, timestamp_utc: str) -> dict[str, str]:
     return {
@@ -36,7 +34,6 @@ def _signature_payload(document_hash: str, signer_cert_fingerprint: str, timesta
         "signer_certificate_fingerprint_sha256": signer_cert_fingerprint,
         "timestamp_utc": timestamp_utc,
     }
-
 
 def sign_document(workspace: Path, user_id: str, document: Path) -> dict[str, str]:
     paths = PKIPaths(workspace)
@@ -70,7 +67,6 @@ def sign_document(workspace: Path, user_id: str, document: Path) -> dict[str, st
         "signer_certificate_fingerprint_sha256": cert_fingerprint,
     }
 
-
 def _verify_certificate_chain(signer_cert: x509.Certificate, ca_cert: x509.Certificate) -> None:
     if signer_cert.issuer != ca_cert.subject:
         raise ValueError("Signer certificate issuer does not match internal CA")
@@ -83,14 +79,12 @@ def _verify_certificate_chain(signer_cert: x509.Certificate, ca_cert: x509.Certi
         ec.ECDSA(signer_cert.signature_hash_algorithm),
     )
 
-
 def _verify_validity_period(certificate: x509.Certificate) -> None:
     now = utc_now()
     if now < certificate.not_valid_before_utc:
         raise ValueError("Signer certificate is not valid yet")
     if now > certificate.not_valid_after_utc:
         raise ValueError("Signer certificate has expired")
-
 
 def verify_document(workspace: Path, document: Path, signature_file: Path) -> dict[str, str | bool]:
     paths = PKIPaths(workspace)

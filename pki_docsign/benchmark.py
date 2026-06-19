@@ -26,7 +26,6 @@ def _write_synthetic_document(path: Path, size_bytes: int) -> None:
             file.write(chunk)
             remaining -= len(chunk)
 
-
 def run_benchmark(workspace: Path, user_id: str, rounds: int = 20) -> Path:
     paths = PKIPaths(workspace)
     ensure_dir(paths.benchmark_dir)
@@ -70,7 +69,6 @@ def run_benchmark(workspace: Path, user_id: str, rounds: int = 20) -> Path:
                 )
 
     return result_path
-
 
 def run_tamper_experiment(workspace: Path, user_id: str) -> Path:
     paths = PKIPaths(workspace)
@@ -118,7 +116,6 @@ def run_tamper_experiment(workspace: Path, user_id: str) -> Path:
 
     return result_path
 
-
 def _self_signed_cert_pem(private_key: rsa.RSAPrivateKey | ec.EllipticCurvePrivateKey, common_name: str) -> bytes:
     now = utc_now()
     subject = issuer = x509.Name(
@@ -139,7 +136,6 @@ def _self_signed_cert_pem(private_key: rsa.RSAPrivateKey | ec.EllipticCurvePriva
         .sign(private_key, hashes.SHA256())
     )
     return certificate.public_bytes(serialization.Encoding.PEM)
-
 
 def run_certificate_size_comparison(workspace: Path) -> Path:
     paths = PKIPaths(workspace)
