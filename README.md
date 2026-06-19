@@ -52,8 +52,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Jika library `cryptography` sudah tersedia, virtual environment tidak wajib untuk demo.
-
 ## Testing Implementasi
 
 ### 1. Membuat Internal CA
