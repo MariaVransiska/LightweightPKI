@@ -10,21 +10,16 @@ from .benchmark import run_benchmark, run_certificate_size_comparison, run_tampe
 from .ca import init_ca, issue_certificate, revoke_certificate
 from .signing import sign_document, verify_document
 
-
 DEFAULT_WORKSPACE = Path("workspace")
-
 
 def _print_result(data: dict[str, object]) -> None:
     print(json.dumps(data, indent=2, sort_keys=True))
 
-
 def _workspace(args: argparse.Namespace) -> Path:
     return Path(args.workspace)
 
-
 def cmd_init_ca(args: argparse.Namespace) -> None:
     _print_result(init_ca(_workspace(args), args.org, args.validity_days))
-
 
 def cmd_issue_cert(args: argparse.Namespace) -> None:
     _print_result(
@@ -37,33 +32,26 @@ def cmd_issue_cert(args: argparse.Namespace) -> None:
         )
     )
 
-
 def cmd_sign(args: argparse.Namespace) -> None:
     _print_result(sign_document(_workspace(args), args.user_id, Path(args.document)))
-
 
 def cmd_verify(args: argparse.Namespace) -> None:
     _print_result(verify_document(_workspace(args), Path(args.document), Path(args.signature)))
 
-
 def cmd_revoke(args: argparse.Namespace) -> None:
     _print_result(revoke_certificate(_workspace(args), args.user_id, args.reason))
-
 
 def cmd_benchmark(args: argparse.Namespace) -> None:
     result_path = run_benchmark(_workspace(args), args.user_id, args.rounds)
     _print_result({"benchmark_results": str(result_path)})
 
-
 def cmd_tamper_experiment(args: argparse.Namespace) -> None:
     result_path = run_tamper_experiment(_workspace(args), args.user_id)
     _print_result({"tamper_experiment_results": str(result_path)})
 
-
 def cmd_compare_cert_size(args: argparse.Namespace) -> None:
     result_path = run_certificate_size_comparison(_workspace(args))
     _print_result({"certificate_size_comparison": str(result_path)})
-
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -114,7 +102,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     return parser
 
-
 def main(argv: list[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
@@ -125,7 +112,6 @@ def main(argv: list[str] | None = None) -> int:
     except Exception as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
